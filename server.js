@@ -3,8 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 8000;
 
-
-// Use the array below to store the users. Add/remove/update items in it based off
+// initialize storage from storage.json
 let storage = require('./storage.json');
 
 app.use(bodyParser.json());
@@ -21,13 +20,14 @@ app.post('/users', function(req, res) {
     storage.push(newUser)
     res.json(storage)
   }
-
 });
+
 
 app.get('/users', function(req, res) {
   // return all users
   res.json(storage);
 });
+
 
 app.get('/user/:name', function(req, res) {
   // return user by name param
@@ -51,15 +51,14 @@ app.put('/user/:name', function(req, res) {
   res.sendStatus(400);
 });
 
+
 app.delete('/user/:name', function(req, res) {
   // delete a user
-
   storage = storage.filter(function(user) {
     if (user['name'] !== req.params.name) {
       return user
     }
   })
-
   res.json(storage)
 });
 
