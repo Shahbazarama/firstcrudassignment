@@ -17,7 +17,7 @@ app.post('/users', function(req, res) {
   if (!newUser) {
     // no user found in request body
     return res.sendStatus(400);
-  } else{
+  } else {
     storage.push(newUser)
     res.json(storage)
   }
@@ -32,7 +32,7 @@ app.get('/users', function(req, res) {
 app.get('/user/:name', function(req, res) {
   // return user by name param
   for (var i = 0; i < storage.length; i++) {
-    if(storage[i]['name'] === req.params.name){
+    if (storage[i]['name'] === req.params.name) {
       res.json(storage[i])
     }
   }
@@ -40,10 +40,10 @@ app.get('/user/:name', function(req, res) {
 });
 
 
-app.put('/user/:name', function(req, res){
+app.put('/user/:name', function(req, res) {
   // update a current user's name
   for (var i = 0; i < storage.length; i++) {
-    if(storage[i]['name'] === req.params.name){
+    if (storage[i]['name'] === req.params.name) {
       storage[i]['name'] = req.body.name
       res.json(storage[i])
     }
@@ -51,11 +51,19 @@ app.put('/user/:name', function(req, res){
   res.sendStatus(400);
 });
 
-app.delete('/user/:name', function(req, res){
+app.delete('/user/:name', function(req, res) {
+  // delete a user
 
+  storage = storage.filter(function(user) {
+    if (user['name'] !== req.params.name) {
+      return user
+    }
+  })
+
+  res.json(storage)
 });
 
 
-app.listen(port, ()=>{
+app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 })
